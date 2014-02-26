@@ -121,8 +121,13 @@ def get_web_root(wb, datadir_path, bitcoind_getinfo_var, stop_event=variable.Eve
         
         my_unstale_count2 = sum(1 for share in node.tracker.get_chain(node.best_share_var.value, lookbehind * 2 ) if share.hash in wb.my_share_hashes)
        
-	   
         my_unstale_count4 = sum(1 for share in node.tracker.get_chain(node.best_share_var.value, lookbehind * 4 ) if share.hash in wb.my_share_hashes)
+		
+        my_unstale_count6 = sum(1 for share in node.tracker.get_chain(node.best_share_var.value, lookbehind * 6 ) if share.hash in wb.my_share_hashes)
+		
+        my_unstale_count8 = sum(1 for share in node.tracker.get_chain(node.best_share_var.value, lookbehind * 8 ) if share.hash in wb.my_share_hashes)
+		
+        my_unstale_count10 = sum(1 for share in node.tracker.get_chain(node.best_share_var.value, lookbehind * 10 ) if share.hash in wb.my_share_hashes)
 	   
         my_unstale_count12 = sum(1 for share in node.tracker.get_chain(node.best_share_var.value, lookbehind * 12 ) if share.hash in wb.my_share_hashes)
 		
@@ -160,8 +165,11 @@ def get_web_root(wb, datadir_path, bitcoind_getinfo_var, stop_event=variable.Eve
                 unstale_shares=my_unstale_count,
                 unstale_shares2=my_unstale_count2,
                 unstale_shares4=my_unstale_count4,
+                unstale_shares6=my_unstale_count6,
+                unstale_shares8=my_unstale_count8,
+                unstale_shares10=my_unstale_count10,
                 unstale_shares12=my_unstale_count12,
-				stale_shares=my_stale_count,
+                stale_shares=my_stale_count,
                 orphan_stale_shares=my_orphan_count,
                 doa_stale_shares=my_doa_count,
             ),
