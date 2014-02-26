@@ -118,6 +118,15 @@ def get_web_root(wb, datadir_path, bitcoind_getinfo_var, stop_event=variable.Eve
         global_stale_prop = p2pool_data.get_average_stale_prop(node.tracker, node.best_share_var.value, lookbehind)
         
         my_unstale_count = sum(1 for share in node.tracker.get_chain(node.best_share_var.value, lookbehind) if share.hash in wb.my_share_hashes)
+        
+        my_unstale_count2 = sum(1 for share in node.tracker.get_chain(node.best_share_var.value, lookbehind * 2 ) if share.hash in wb.my_share_hashes)
+       
+	   
+        my_unstale_count4 = sum(1 for share in node.tracker.get_chain(node.best_share_var.value, lookbehind * 4 ) if share.hash in wb.my_share_hashes)
+	   
+        my_unstale_count12 = sum(1 for share in node.tracker.get_chain(node.best_share_var.value, lookbehind * 12 ) if share.hash in wb.my_share_hashes)
+		
+		
         my_orphan_count = sum(1 for share in node.tracker.get_chain(node.best_share_var.value, lookbehind) if share.hash in wb.my_share_hashes and share.share_data['stale_info'] == 'orphan')
         my_doa_count = sum(1 for share in node.tracker.get_chain(node.best_share_var.value, lookbehind) if share.hash in wb.my_share_hashes and share.share_data['stale_info'] == 'doa')
         my_share_count = my_unstale_count + my_orphan_count + my_doa_count
@@ -149,7 +158,10 @@ def get_web_root(wb, datadir_path, bitcoind_getinfo_var, stop_event=variable.Eve
             my_share_counts_in_last_hour=dict(
                 shares=my_share_count,
                 unstale_shares=my_unstale_count,
-                stale_shares=my_stale_count,
+                unstale_shares2=my_unstale_count2,
+                unstale_shares4=my_unstale_count4,
+                unstale_shares12=my_unstale_count12,
+				stale_shares=my_stale_count,
                 orphan_stale_shares=my_orphan_count,
                 doa_stale_shares=my_doa_count,
             ),
