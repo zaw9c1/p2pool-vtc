@@ -298,7 +298,8 @@ class WorkerBridge(worker_interface.WorkerBridge):
         mm_later = [(dict(aux_work, target=aux_work['target'] if aux_work['target'] != 'p2pool' else share_info['bits'].target), index, hashes) for aux_work, index, hashes in mm_later]
         
         if desired_pseudoshare_target is None:
-            target = 2**256-1
+           # target = 2**256-2 # 2**256-2
+            target = bitcoin_data.difficulty_to_target(float(1.0 / self.node.net.PARENT.DUMB_SCRYPT_DIFF))
             local_hash_rate = self._estimate_local_hash_rate()
             if local_hash_rate is not None:
                 target = min(target,
@@ -314,6 +315,7 @@ class WorkerBridge(worker_interface.WorkerBridge):
         lp_count = self.new_work_event.times
         merkle_link = bitcoin_data.calculate_merkle_link([None] + other_transaction_hashes, 0)
         
+        print
         print 'New work for worker %s! Difficulty: %.06f Share difficulty: %.06f (speed %.06f) Total block value: %.6f %s including %i transactions' % (
             bitcoin_data.pubkey_hash_to_address(pubkey_hash, self.node.net.PARENT),
             bitcoin_data.target_to_difficulty(target),
@@ -394,6 +396,7 @@ class WorkerBridge(worker_interface.WorkerBridge):
                 last_txout_nonce = pack.IntType(8*self.COINBASE_NONCE_LENGTH).unpack(coinbase_nonce)
                 share = get_share(header, last_txout_nonce)
                 
+                print
                 print 'GOT SHARE! %s %s prev %s age %.2fs%s' % (
                     user,
                     p2pool_data.format_hash(share.hash),
@@ -401,6 +404,7 @@ class WorkerBridge(worker_interface.WorkerBridge):
                     time.time() - getwork_time,
                     ' DEAD ON ARRIVAL' if not on_time else '',
                 )
+                print				
                 self.my_share_hashes.add(share.hash)
                 if not on_time:
                     self.my_doa_share_hashes.add(share.hash)
